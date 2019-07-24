@@ -1,0 +1,27 @@
+body{
+    background: url("../../assets/images/question-background.png");
+}
+
+h1{
+    color: blue;
+    text-align: center;
+}
+
+#question{
+    background-color: green;
+    height: 200px;
+    width: auto;
+}
+
+#tracker{
+    background-color: blue;
+    height: 900px;
+    width: auto;
+}
+
+.answer{
+    background-color: bisque;
+    width: auto;
+    height: 50px;
+    margin: 10px 10px;
+}
