@@ -21,8 +21,9 @@ question3 = {
 ]
 
 let round = 0;
-let questionsUsed = [0];
-// selecting random question
+let random;
+let questionsUsed = [];
+// selecting random qu0estion
 
 // function checkForUsed(){
 //     if(questions[random].used === false){
@@ -35,17 +36,18 @@ let questionsUsed = [0];
 //     }
 // }
 
+//function selects random question from array an checks if alreay used to avoid duplication
 
 function randomQuestion(){
-    let random = Math.floor(Math.random() * 3);
-    if(questionsUsed.indexOf(random)){
+    random = Math.floor(Math.random() * 3);
+    console.log(random);
+    if(questionsUsed.indexOf(random) == false){
         console.log("repeat");
         randomQuestion();
-        random = undefined;
     }
     else{
         console.log("not used");
-        questions.push(random);
+        questionsUsed.push(random);
     }
     console.log(questionsUsed);
 }
@@ -53,17 +55,18 @@ function randomQuestion(){
 $(document).ready(function () {
 
 
-//check if question already used
-
 randomQuestion();
 
+//Populating divs with question and answers
+
+$("#question").text(questions[random].question);
+$(".answer1").text(questions[random].answers[0]);
+$(".answer2").text(questions[random].answers[1]);
+$(".answer3").text(questions[random].answers[2]);
+$(".answer4").text(questions[random].answers[3]);
 
 
 
 $("#question").text(randomQuestion.question);
-
-
-
-
 
 });
