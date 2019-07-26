@@ -77,13 +77,17 @@ function timer(setTime){
 
     function count(){
         setTime--;
-        time = setTime;
-        // console.log(setTime);
+        console.log(setTime);
         if(setTime == 0){
-            () => {clearInterval(timevar)};
+            stop();
         }
     }
+    function stop(){
+        clearInterval(timevar);
+    }
+
 }
+
 
 
 $(document).ready(function () {
@@ -91,11 +95,11 @@ $(document).ready(function () {
 
 randomQuestion();
 populateFields();
-timer(5);
+timer(3);
 
 //adds click events and checks if answer is correct
 
-$("div.answer").on("click", function() {
+$("div.answer").on("click", function () {
     let value = ($(this).attr("value"));
     console.log(value);
     if(questions[random].correct.indexOf(value) == -1){
