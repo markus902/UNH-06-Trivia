@@ -88,7 +88,9 @@ function timer(setTime){
 
 }
 
-
+function killQuestion({
+    
+})
 
 $(document).ready(function () {
 
