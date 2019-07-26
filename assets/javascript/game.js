@@ -22,6 +22,8 @@ question2 = {
 let round = 0;
 let random;
 let questionsUsed = [];
+let time;
+let rightAnswer;
 
 //function selects random question from array an checks if alreay used to avoid duplication
 
@@ -44,10 +46,12 @@ function randomQuestion(){
 function populateFields(){
     $("#question").text(questions[random].question);
     for(i = 0; i < 4; i++){
-        console.log(i);
-        $(`.answer${i}`).text(questions[random].answers[i])};
+        $(`.answer${i}`)
+            .text(questions[random].answers[i])
+            .attr("value", questions[random].answers[i])};
 }
-    
+
+
 //  Takes the current time in seconds and convert it to minutes and seconds (mm:ss).
 
 function timeConverter(t) {
@@ -73,25 +77,39 @@ function timer(setTime){
 
     function count(){
         setTime--;
-        console.log(setTime);
+        time = setTime;
+        // console.log(setTime);
         if(setTime == 0){
             () => {clearInterval(timevar)};
         }
     }
 }
 
+
 $(document).ready(function () {
-
-
-
-
-
-
 
 
 randomQuestion();
 populateFields();
-timer(20);
+timer(5);
+
+//adds click events and checks if answer is correct
+
+$("div.answer").on("click", function() {
+    let value = ($(this).attr("value"));
+    console.log(value);
+    if(questions[random].correct.indexOf(value) == -1){
+        console.log("correct");
+        $(this).css("background-color", "green");
+    }
+    else{
+        console.log("incorrect");
+        $(this).css("background-color", "red");
+    }
+    
+    // let answer = questions[random]
+});
+
 
 $("#question").text(randomQuestion.question);
 
