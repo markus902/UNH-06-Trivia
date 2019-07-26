@@ -17,24 +17,11 @@ question3 = {
     answers: ["An Actor","A living person","A President","Employees of the postal service"],
     correct: 1,
 }
-
 ]
 
 let round = 0;
 let random;
 let questionsUsed = [];
-// selecting random qu0estion
-
-// function checkForUsed(){
-//     if(questions[random].used === false){
-//         console.log("true");
-        
-//     }
-//     else{
-//         console.log("repeat");
-//         checkForUsed();
-//     }
-// }
 
 //function selects random question from array an checks if alreay used to avoid duplication
 
@@ -52,20 +39,69 @@ function randomQuestion(){
     console.log(questionsUsed);
 }
 
+//Populating divs with question and answers
+
+function populateFields(){
+    $("#question").text(questions[random].question);
+    
+    for(i = 0, i < ){
+    $(".answer1").text(questions[random].answers[0]);
+    }
+    $(".answer2").text(questions[random].answers[1]);
+    $(".answer3").text(questions[random].answers[2]);
+    $(".answer4").text(questions[random].answers[3]);
+    }
+
+function timeConverter(t) {
+
+    //  Takes the current time in seconds and convert it to minutes and seconds (mm:ss).
+    var minutes = Math.floor(t / 60);
+    var seconds = t - (minutes * 60);
+    
+    if (seconds < 10) {
+        seconds = "0" + seconds;
+    }
+    if (minutes === 0) {
+        minutes = "00";
+    }
+    else if (minutes < 10) {
+        minutes = "0" + minutes;
+    }
+    return minutes + ":" + seconds;
+    }
+
+function timer(setTime){
+
+    let timevar = setInterval(count, 1000);
+
+    function count(){
+        setTime--;
+        console.log(setTime);
+        if(setTime == 0){
+            stop();
+        }
+    }
+    function stop(){
+        clearInterval(timevar);
+    }
+        
+}
+    
+    
+
+
 $(document).ready(function () {
 
 
+
+
+
+
+
+
 randomQuestion();
-
-//Populating divs with question and answers
-
-$("#question").text(questions[random].question);
-$(".answer1").text(questions[random].answers[0]);
-$(".answer2").text(questions[random].answers[1]);
-$(".answer3").text(questions[random].answers[2]);
-$(".answer4").text(questions[random].answers[3]);
-
-
+populateFields();
+timer(20);
 
 $("#question").text(randomQuestion.question);
 
