@@ -33,6 +33,7 @@ $.ajax({
         }
         $(".answer").removeClass("red green accent-3").addClass("blue lighten-4");
         newEntry = $("<div>").addClass("entry");
+        random++
         populateFields();
     }
 
@@ -42,7 +43,7 @@ $.ajax({
         answers = questions[random].incorrect_answers;
         answers.push(questions[random].correct_answer);
         // answers.sort(function(a, b){return 0.5 - Math.random()}); //shuffle answers
-        $("#question").text(questions[random].question);
+        $("#question").html(`<p>${questions[random].question}</p>`);
         for (i = 0; i < 4; i++) {
             $(`.answer${i}`)
                 .html(`<span>${answers[i]}</span>`)
@@ -69,13 +70,14 @@ $.ajax({
         time = 21;
         random++
         wrongAnswers++;
-        newEntry.text(questions[random].question + " Your answer: none, time was up. " + "-incorrect | correct answer: " + questions[random].correct_answer);
+        newEntry.html(`<p>${questions[random].question} Your answer: none, time was up. -incorrect | correct answer: ${questions[random].correct_answer}</p>`);
         $("#tracker").append(newEntry);
         timer();
         newQuestion();
     }
 
     $(document).ready(function () {
+
 
         // creating click events
 
@@ -91,7 +93,6 @@ $.ajax({
         // on click check if answer is correct and populating tracker
 
         $("div.answer").on("click", function () {
-            random++
             clearInterval(timevar);
             time = 21;
             timer();
@@ -101,7 +102,7 @@ $.ajax({
                 rightAnswers++;
                 console.log(this);
                 $(this).removeClass("blue lighten-4").addClass("green accent-3");
-                newEntry.text(questions[random].question + " Your answer: " + questions[random].correct_answer + " -correct")
+                newEntry.html(`<p>${questions[random].question} Your answer: ${questions[random].correct_answer} -correct</p>`)
                 $("#tracker").append(newEntry);
                 setTimeout(newQuestion, 1300);
             
