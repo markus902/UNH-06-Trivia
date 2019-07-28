@@ -7,10 +7,19 @@ h1{
     text-align: center;
 }
 
+#timer{
+    margin: 10px 40% 10px 40%;
+    height: 40px;
+    color: white;
+    text-align: center;
+    background-color: brown;
+}
+
 #question{
     background-color: green;
     height: 200px;
     width: auto;
+    opacity: 0.8;
 }
 
 #tracker{
@@ -20,8 +29,12 @@ h1{
 }
 
 .answer{
-    background-color: bisque;
+    background-color: white;
     width: auto;
     height: 50px;
     margin: 10px 10px;
+}
+
+div.round{
+    border-radius: 20px;
 }
