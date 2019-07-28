@@ -24,7 +24,6 @@ $.ajax({
         console.log(random);
         if(random == 9){
             alert(`Score: ${rightAnswers} right answers, ${wrongAnswers} wrong answers. Click ok for another round.`)
-            random = 0;
             rightAnswers = 0;
             wrongAnswers = 0;
             time= 21;
@@ -104,7 +103,7 @@ $.ajax({
                 $(this).removeClass("blue lighten-4").addClass("green accent-3");
                 newEntry.html(`<p>${questions[random].question} Your answer: ${questions[random].correct_answer} -correct</p>`)
                 $("#tracker").append(newEntry);
-                setTimeout(newQuestion, 13);
+                setTimeout(newQuestion, 1000);
             }
             else {
                 console.log("incorrect");
@@ -114,7 +113,7 @@ $.ajax({
                 newEntry.html(`<p>${questions[random].question} Your answer: ${value} -incorrect | correct answer: ${questions[random].correct_answer}</p>`)
                 $(this).removeClass("blue lighten-4").addClass("red accent-3");
                 $("#tracker").append(newEntry);
-                setTimeout(newQuestion, 13);
+                setTimeout(newQuestion, 1000);
             }
         });
     });
