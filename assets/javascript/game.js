@@ -1,87 +1,93 @@
-let round = 0;
-let random;
-let questionsUsed = [];
-let time = 20;
-let rightAnswer = 0;
+let random = 0;
+let initialTime = 21;
+let rightAnswers = 0;
+let wrongAnswers = 0;
+let answers = [];
 let timevar;
+let newEntry;
+let value;
+let questions;
 
-let questions = [
+$.ajax({
+    url: "https://opentdb.com/api.php?amount=10&type=multiple",
+    method: "GET"
+  }).then(function(response) {
+        questions = response.results;
+        // questions.sort(function(a, b){return 0.5 - Math.random()}); //suffle questions array
+        console.log(questions)
+      });
 
-    question0 = {
-        question: "The beaver is the national emblem of which country?",
-        answers: ["Canada", "Russia", "Germany", "USA"],
-        correct: "Canada"
-    },
-
-    question1 = {
-        question: "How many players are there in a baseball team?",
-        answers: ["5", "6", "8", "9"],
-        correct: "9"
-    },
-
-    question2 = {
-        question: "What kind of person shall not be honored on a US postal stamp, according to the US postal service and the Citizen’s Stamp Advisory Commitee?",
-        answers: ["An Actor", "A living person", "A President", "Employees of the postal service"],
-        correct: "A living person"
+    //function selects random question from array an checks if alreay used to avoid duplication
+    function start(){
+        rightAnswers = 0;
+        wrongAnswers = 0;
+        random = 0;
+        time = initialTime;
+        clearInterval(timevar);
+        newQuestion();
     }
-]
 
-//function selects random question from array an checks if alreay used to avoid duplication
-
-function randomQuestion() {
-    random = Math.floor(Math.random() * 3);
-    console.log(random);
-    console.log(questionsUsed.indexOf(random));
-    if (questionsUsed.indexOf(random) < 0) {
-        console.log("use Question");
-        questionsUsed.push(random);
-    }
-    else if(questions.length == questionsUsed.length){
-        questionsUsed = [];
-    }
-    else{
-            console.log("already used");
-            randomQuestion();
+    function newQuestion() {
+        console.log(random);
+        if(random == 9){
+            $("div.answer").off();
+            alert(`Score: ${rightAnswers} right answers, ${wrongAnswers} wrong answers. Click ok for another round.`)
+            random = 0;
+            console.log("random" + random)
+            $("#tracker").empty();
+            newQuestion();
         }
-        console.log(questionsUsed);
+        $(".answer").removeClass("red green accent-3").addClass("blue lighten-4");
+        newEntry = $("<div>").addClass("entry");
+        populateFields();
+        checkAnswer();
+       
+        // timer();
     }
 
     //Populating divs with question and answers
 
     function populateFields() {
-
+        answers = questions[random].incorrect_answers;
+        answers.push(questions[random].correct_answer);
+        // answers.sort(function(a, b){return 0.5 - Math.random()}); //shuffle answers
         $("#question").text(questions[random].question);
         for (i = 0; i < 4; i++) {
             $(`.answer${i}`)
-                .html(`<span>${questions[random].answers[i]}</span>`)
-                .attr("value", questions[random].answers[i]);
-            $(`.answer${i}`).css("background-color", "white");
+                .html(`<span>${answers[i]}</span>`)
+                .attr("value", answers[i]);
+            $(`.answer${i}`).addClass("blue lighten-4")
         };
     }
 
     function checkAnswer(){
         $("div.answer").on("click", function () {
-            let value = ($(this).attr("value"));
-            console.log(value);
-           
-            if (questions[random].correct == value) {
+            value = ($(this).attr("value"));
+            random++;
+            if (questions[random].correct_answer == value) {
                 console.log("correct");
-                rightAnswer++;
+                rightAnswers++;
                 console.log(this);
-                $(this).css("background-color", "green");
+                $(this).removeClass("blue lighten-4").addClass("green accent-3");
+                newEntry.text(questions[random].question + " Your answer: " + questions[random].correct_answer + " -correct")
+                $("#tracker").append(newEntry);
             }
             else {
                 console.log("incorrect");
-                $(this).css("background-color", "red");
+                wrongAnswers++;
+                newEntry.text(questions[random].question + " Your answer: " + value + " -incorrect | correct answer: " + questions[random].correct_answer)
+                $(this).removeClass("blue lighten-4").addClass("red accent-3");
+                $("#tracker").append(newEntry);
             }
-            setTimeout(stopTimer, 1500);
-            resetRound();
+            setTimeout(newQuestion, 10);
             $("div.answer").off();
+
+            
         });
         }
 
     function timer() {
-        function count() {
+        function count(){
             time--;
             console.log(time);
             $("#timer").html(`<h4>${time}</h4>`);
@@ -95,24 +101,19 @@ function randomQuestion() {
 
     function stopTimer() {
         clearInterval(timevar);
-        newQuestion();
-    }
-
-    function newQuestion() {
-        time = 20;
-        randomQuestion();
-        populateFields();
-        checkAnswer();
-        timer();
+        // let value = questions[random].correct
+        // alert(`You ran out of time! Score: ${rightAnswers} right answers, ${wrongAnswers} wrong answers. Click ok for another round.`);
     }
 
     function resetRound(){
-
     }
 
     $(document).ready(function () {
-        newQuestion();
+        // newQuestion();
 
-        $("#reset-btn").on("click", resetRound);
-        $("#question").text(randomQuestion.question);
+        $("#reset-btn").on("click", start);
+        $("#question").text("Show how much your know!");
+        $("#start-btn").on("click", start)
+
+
     });
