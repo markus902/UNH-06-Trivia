@@ -1,31 +1,41 @@
 body{
-    background: url("../../assets/images/question-background.png");
+    /* background: url("../../assets/images/question-background.png"); */
 }
 
 h1{
-    color: blue;
     text-align: center;
+    color: #0d47a1 ;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif
+}
+
+h4{
+    margin: 1rem;
+}
+
+button{
+    border: 0;
+    padding: 10px;
 }
 
 #timer{
-    margin: 10px 40% 10px 40%;
-    height: 40px;
+    
     color: white;
     text-align: center;
-    background-color: brown;
 }
 
 #question{
-    background-color: green;
+    background-color: ;
     height: 200px;
     width: auto;
-    opacity: 0.8;
+    padding: 10px;
+    font-size: 1.2rem;
 }
 
 #tracker{
     background-color: blue;
-    height: 900px;
+    height: max-content;
     width: auto;
+    padding: 10px;
 }
 
 .answer{
@@ -33,8 +43,12 @@ h1{
     width: auto;
     height: 50px;
     margin: 10px 10px;
+    padding: 10px;
+    text-align: center;
+    font-size: 1.2rem;
 }
 
-div.round{
-    border-radius: 20px;
+.round{
+    border-radius: 5px;
+    box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.12), 0 1px 5px 0 rgba(0,0,0,0.2);
 }
