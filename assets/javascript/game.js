@@ -105,12 +105,13 @@ $.ajax({
                 newEntry.html(`<p>${questions[random].question} Your answer: ${questions[random].correct_answer} -correct</p>`)
                 $("#tracker").append(newEntry);
                 setTimeout(newQuestion, 1300);
-            
             }
             else {
                 console.log("incorrect");
+                console.log(value);
                 wrongAnswers++;
-                newEntry.text(questions[random].question + " Your answer: " + value + " -incorrect | correct answer: " + questions[random].correct_answer)
+                
+                newEntry.html(`<p>${questions[random].question} Your answer: ${value} -incorrect | correct answer: ${questions[random].correct_answer}</p>`)
                 $(this).removeClass("blue lighten-4").addClass("red accent-3");
                 $("#tracker").append(newEntry);
                 setTimeout(newQuestion, 1300);
