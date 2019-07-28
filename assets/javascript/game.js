@@ -6,16 +6,14 @@ let answers = [];
 let newEntry;
 let value;
 let questions;
-
-
-
+let timevar;
 
 $.ajax({
     url: "https://opentdb.com/api.php?amount=10&type=multiple",
     method: "GET"
   }).then(function(response) {
         questions = response.results;
-        questions.sort(function(a, b){return 0.5 - Math.random()}); //suffle questions array
+        // questions.sort(function(a, b){return 0.5 - Math.random()}); //suffle questions array
         console.log(questions)
       });
 
@@ -31,7 +29,6 @@ $.ajax({
             wrongAnswers = 0;
             time= 21;
             console.log("random" + random)
-            $("#tracker").empty();
             location.reload();
         }
         $(".answer").removeClass("red green accent-3").addClass("blue lighten-4");
@@ -44,7 +41,7 @@ $.ajax({
     function populateFields() {
         answers = questions[random].incorrect_answers;
         answers.push(questions[random].correct_answer);
-        answers.sort(function(a, b){return 0.5 - Math.random()}); //shuffle answers
+        // answers.sort(function(a, b){return 0.5 - Math.random()}); //shuffle answers
         $("#question").text(questions[random].question);
         for (i = 0; i < 4; i++) {
             $(`.answer${i}`)
@@ -70,14 +67,12 @@ $.ajax({
     function stopTimer() {
         clearInterval(timevar);
         time = 21;
-        random++;
+        random++
         wrongAnswers++;
         newEntry.text(questions[random].question + " Your answer: none, time was up. " + "-incorrect | correct answer: " + questions[random].correct_answer);
         $("#tracker").append(newEntry);
         timer();
-        newQuestion()
-        // let value = questions[random].correct
-        // alert(`You ran out of time! Score: ${rightAnswers} right answers, ${wrongAnswers} wrong answers. Click ok for another round.`);
+        newQuestion();
     }
 
     $(document).ready(function () {
@@ -85,9 +80,10 @@ $.ajax({
         // creating click events
 
         $("#start-btn").on("click", function(event){
+            timer();
             event.preventDefault();
                 newQuestion();
-                timer();
+                $("#tracker").empty();
             });
         $("#question").text("Show how much your know!");
         $("#reset-btn").on("click", ()=>{location.reload()});
@@ -95,9 +91,12 @@ $.ajax({
         // on click check if answer is correct and populating tracker
 
         $("div.answer").on("click", function () {
+            random++
+            clearInterval(timevar);
+            time = 21;
+            timer();
             value = ($(this).attr("value"));
-            random++;
-            if (questions[random].correct_answer == value) {
+                if (questions[random].correct_answer == value) {
                 console.log("correct");
                 rightAnswers++;
                 console.log(this);
