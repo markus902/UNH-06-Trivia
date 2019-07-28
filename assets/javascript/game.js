@@ -69,7 +69,7 @@ $.ajax({
         time = 21;
         random++
         wrongAnswers++;
-        newEntry.html(`<p>${questions[random].question} Your answer: none, time was up. -incorrect | correct answer: ${questions[random].correct_answer}</p>`);
+        newEntry.html(`<p>${questions[random].question} Your answer: none, time was up. - incorrect | correct answer: ${questions[random].correct_answer}</p>`);
         $("#tracker").append(newEntry);
         timer();
         newQuestion();
@@ -101,7 +101,7 @@ $.ajax({
                 rightAnswers++;
                 console.log(this);
                 $(this).removeClass("blue lighten-4").addClass("green accent-3");
-                newEntry.html(`<p>${questions[random].question} Your answer: ${questions[random].correct_answer} -correct</p>`)
+                newEntry.html(`<p>${questions[random].question} Your answer: ${questions[random].correct_answer} - correct</p>`)
                 $("#tracker").append(newEntry);
                 setTimeout(newQuestion, 1000);
             }
@@ -110,7 +110,7 @@ $.ajax({
                 console.log(value);
                 wrongAnswers++;
                 
-                newEntry.html(`<p>${questions[random].question} Your answer: ${value} -incorrect | correct answer: ${questions[random].correct_answer}</p>`)
+                newEntry.html(`<p>${questions[random].question} Your answer: ${value} - incorrect | correct answer: ${questions[random].correct_answer}</p>`)
                 $(this).removeClass("blue lighten-4").addClass("red accent-3");
                 $("#tracker").append(newEntry);
                 setTimeout(newQuestion, 1000);
