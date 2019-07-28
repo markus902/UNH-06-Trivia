@@ -22,7 +22,7 @@ $.ajax({
     function newQuestion() {
         $("#start-btn").off();
         console.log(random);
-        if(random == 9){
+        if(random == 10){
             alert(`Score: ${rightAnswers} right answers, ${wrongAnswers} wrong answers. Click ok for another round.`)
             random = 0;
             rightAnswers = 0;
