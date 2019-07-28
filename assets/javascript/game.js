@@ -1,48 +1,42 @@
 let random = 0;
-let initialTime = 21;
+let time = 21;;
 let rightAnswers = 0;
 let wrongAnswers = 0;
 let answers = [];
-let timevar;
 let newEntry;
 let value;
 let questions;
+
+
+
 
 $.ajax({
     url: "https://opentdb.com/api.php?amount=10&type=multiple",
     method: "GET"
   }).then(function(response) {
         questions = response.results;
-        // questions.sort(function(a, b){return 0.5 - Math.random()}); //suffle questions array
+        questions.sort(function(a, b){return 0.5 - Math.random()}); //suffle questions array
         console.log(questions)
       });
 
-    //function selects random question from array an checks if alreay used to avoid duplication
-    function start(){
-        rightAnswers = 0;
-        wrongAnswers = 0;
-        random = 0;
-        time = initialTime;
-        clearInterval(timevar);
-        newQuestion();
-    }
+    //picks a random question form the array, resets game once all 10 questions were answered
 
     function newQuestion() {
+        $("#start-btn").off();
         console.log(random);
         if(random == 9){
-            $("div.answer").off();
             alert(`Score: ${rightAnswers} right answers, ${wrongAnswers} wrong answers. Click ok for another round.`)
             random = 0;
+            rightAnswers = 0;
+            wrongAnswers = 0;
+            time= 21;
             console.log("random" + random)
             $("#tracker").empty();
-            newQuestion();
+            location.reload();
         }
         $(".answer").removeClass("red green accent-3").addClass("blue lighten-4");
         newEntry = $("<div>").addClass("entry");
         populateFields();
-        checkAnswer();
-       
-        // timer();
     }
 
     //Populating divs with question and answers
@@ -50,7 +44,7 @@ $.ajax({
     function populateFields() {
         answers = questions[random].incorrect_answers;
         answers.push(questions[random].correct_answer);
-        // answers.sort(function(a, b){return 0.5 - Math.random()}); //shuffle answers
+        answers.sort(function(a, b){return 0.5 - Math.random()}); //shuffle answers
         $("#question").text(questions[random].question);
         for (i = 0; i < 4; i++) {
             $(`.answer${i}`)
@@ -59,32 +53,6 @@ $.ajax({
             $(`.answer${i}`).addClass("blue lighten-4")
         };
     }
-
-    function checkAnswer(){
-        $("div.answer").on("click", function () {
-            value = ($(this).attr("value"));
-            random++;
-            if (questions[random].correct_answer == value) {
-                console.log("correct");
-                rightAnswers++;
-                console.log(this);
-                $(this).removeClass("blue lighten-4").addClass("green accent-3");
-                newEntry.text(questions[random].question + " Your answer: " + questions[random].correct_answer + " -correct")
-                $("#tracker").append(newEntry);
-            }
-            else {
-                console.log("incorrect");
-                wrongAnswers++;
-                newEntry.text(questions[random].question + " Your answer: " + value + " -incorrect | correct answer: " + questions[random].correct_answer)
-                $(this).removeClass("blue lighten-4").addClass("red accent-3");
-                $("#tracker").append(newEntry);
-            }
-            setTimeout(newQuestion, 10);
-            $("div.answer").off();
-
-            
-        });
-        }
 
     function timer() {
         function count(){
@@ -101,19 +69,51 @@ $.ajax({
 
     function stopTimer() {
         clearInterval(timevar);
+        time = 21;
+        random++;
+        wrongAnswers++;
+        newEntry.text(questions[random].question + " Your answer: none, time was up. " + "-incorrect | correct answer: " + questions[random].correct_answer);
+        $("#tracker").append(newEntry);
+        timer();
+        newQuestion()
         // let value = questions[random].correct
         // alert(`You ran out of time! Score: ${rightAnswers} right answers, ${wrongAnswers} wrong answers. Click ok for another round.`);
     }
 
-    function resetRound(){
-    }
-
     $(document).ready(function () {
-        // newQuestion();
 
-        $("#reset-btn").on("click", start);
+        // creating click events
+
+        $("#start-btn").on("click", function(event){
+            event.preventDefault();
+                newQuestion();
+                timer();
+            });
         $("#question").text("Show how much your know!");
-        $("#start-btn").on("click", start)
+        $("#reset-btn").on("click", ()=>{location.reload()});
 
+        // on click check if answer is correct and populating tracker
 
+        $("div.answer").on("click", function () {
+            value = ($(this).attr("value"));
+            random++;
+            if (questions[random].correct_answer == value) {
+                console.log("correct");
+                rightAnswers++;
+                console.log(this);
+                $(this).removeClass("blue lighten-4").addClass("green accent-3");
+                newEntry.text(questions[random].question + " Your answer: " + questions[random].correct_answer + " -correct")
+                $("#tracker").append(newEntry);
+                setTimeout(newQuestion, 1300);
+            
+            }
+            else {
+                console.log("incorrect");
+                wrongAnswers++;
+                newEntry.text(questions[random].question + " Your answer: " + value + " -incorrect | correct answer: " + questions[random].correct_answer)
+                $(this).removeClass("blue lighten-4").addClass("red accent-3");
+                $("#tracker").append(newEntry);
+                setTimeout(newQuestion, 1300);
+            }
+        });
     });
