@@ -1,7 +1,7 @@
 let round = 0;
 let random;
 let questionsUsed = [];
-let time = 4;
+let time = 20;
 let rightAnswer = 0;
 let timevar;
 
@@ -10,19 +10,19 @@ let questions = [
     question0 = {
         question: "The beaver is the national emblem of which country?",
         answers: ["Canada", "Russia", "Germany", "USA"],
-        correct: ["Russia", "Germany", "USA"]
+        correct: "Canada"
     },
 
     question1 = {
         question: "How many players are there in a baseball team?",
         answers: ["5", "6", "8", "9"],
-        correct: ["5", "6", "9"]
+        correct: "9"
     },
 
     question2 = {
         question: "What kind of person shall not be honored on a US postal stamp, according to the US postal service and the Citizen’s Stamp Advisory Commitee?",
         answers: ["An Actor", "A living person", "A President", "Employees of the postal service"],
-        correct: ["An Actor", "A President", "Employees of the postal service"]
+        correct: "A living person"
     }
 ]
 
@@ -37,7 +37,6 @@ function randomQuestion() {
         questionsUsed.push(random);
     }
     else if(questions.length == questionsUsed.length){
-        alert("done");
         questionsUsed = [];
     }
     else{
@@ -47,7 +46,6 @@ function randomQuestion() {
         console.log(questionsUsed);
     }
 
-
     //Populating divs with question and answers
 
     function populateFields() {
@@ -55,68 +53,66 @@ function randomQuestion() {
         $("#question").text(questions[random].question);
         for (i = 0; i < 4; i++) {
             $(`.answer${i}`)
-                .text(questions[random].answers[i])
-                .attr("value", questions[random].answers[i])
+                .html(`<span>${questions[random].answers[i]}</span>`)
+                .attr("value", questions[random].answers[i]);
+            $(`.answer${i}`).css("background-color", "white");
         };
+    }
 
+    function checkAnswer(){
         $("div.answer").on("click", function () {
             let value = ($(this).attr("value"));
             console.log(value);
-            if (questions[random].correct.indexOf(value) == -1) {
+           
+            if (questions[random].correct == value) {
                 console.log("correct");
                 rightAnswer++;
+                console.log(this);
                 $(this).css("background-color", "green");
             }
             else {
                 console.log("incorrect");
                 $(this).css("background-color", "red");
             }
-            setTimeout(stop, 1500);
+            setTimeout(stopTimer, 1500);
+            resetRound();
             $("div.answer").off();
         });
-    }
-
+        }
 
     function timer() {
-
-
         function count() {
             time--;
             console.log(time);
             $("#timer").html(`<h4>${time}</h4>`);
             if (time == 0) {
-                stop();
+                stopTimer();
             }
         }
         timevar = setInterval(count, 1000);
 
     }
 
-    function stop() {
+    function stopTimer() {
         clearInterval(timevar);
         newQuestion();
     }
 
     function newQuestion() {
-        console.log("NEW");
-        time = 4;
+        time = 20;
         randomQuestion();
         populateFields();
+        checkAnswer();
         timer();
-
     }
 
-    function resetRound() {
-        for (i = 0; i < 4; i++) {
-            $(`.answer${i}`).css("background-color", "white");
-        }
+    function resetRound(){
+
     }
 
     $(document).ready(function () {
         newQuestion();
 
         $("#reset-btn").on("click", resetRound);
-
         $("#question").text(randomQuestion.question);
-
     });
