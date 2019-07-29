@@ -13,7 +13,7 @@ $.ajax({
     method: "GET"
   }).then(function(response) {
         questions = response.results;
-        // questions.sort(function(a, b){return 0.5 - Math.random()}); //suffle questions array
+        questions.sort(function(a, b){return 0.5 - Math.random()}); //suffle questions array
         console.log(questions)
       });
 
@@ -28,7 +28,6 @@ $.ajax({
             wrongAnswers = 0;
             time= 21;
             console.log("random" + random)
-            location.reload();
         }
         $(".answer").removeClass("red green accent-3").addClass("blue lighten-4");
         newEntry = $("<div>").addClass("entry");
@@ -41,7 +40,7 @@ $.ajax({
     function populateFields() {
         answers = questions[random].incorrect_answers;
         answers.push(questions[random].correct_answer);
-        // answers.sort(function(a, b){return 0.5 - Math.random()}); //shuffle answers
+        answers.sort(function(a, b){return 0.5 - Math.random()}); //shuffle answers
         $("#question").html(`<p>${questions[random].question}</p>`);
         for (i = 0; i < 4; i++) {
             $(`.answer${i}`)
